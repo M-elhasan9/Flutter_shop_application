@@ -11,6 +11,7 @@ import 'package:flutter_shop_application/view/user_products_screen.dart';
 import 'package:provider/provider.dart';
 import './view/product_overview_screen.dart';
 import 'view/splash_screen.dart';
+import 'view/authentication_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,11 +27,11 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.indigo,
-          accentColor: Colors.pinkAccent,
+        theme: ThemeData(primarySwatch: Colors.pink,
+          accentColor: Colors.indigo,
           fontFamily: 'lato',
         ),
-        home: ProductOverviewScreen(),
+        home: AuthenticationScreen(),
         routes: {
           ProductDetailScreen.routeName: (_) => ProductDetailScreen(),
           CartScreen.routeName: (_) => CartScreen(),
