@@ -40,10 +40,7 @@ class MyApp extends StatelessWidget {
                   builder: (ctx, AsyncSnapshot authSnapshot) =>
                       authSnapshot.connectionState == ConnectionState.waiting
                           ? SplashScreen()
-                          :
-                          //TODO: Problem in authentication
-                          //AuthenticationScreen(),
-                          ProductOverviewScreen(),
+                          : AuthenticationScreen(),
                 ),
           routes: {
             ProductDetailScreen.routeName: (_) => ProductDetailScreen(),

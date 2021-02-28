@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../controller/app_drawer.dart';
 
 class OrdersScreen extends StatelessWidget {
   static const routeName = '/order-screen';
@@ -12,6 +13,7 @@ class OrdersScreen extends StatelessWidget {
       body: Center(
         child: Text('Text'),
       ),
+      drawer: AppDrawer(),
     );
   }
 }

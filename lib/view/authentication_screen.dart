@@ -295,7 +295,7 @@ class _AuthenticationCardState extends State<AuthenticationCard>
                 FlatButton(
                   onPressed: _switchAuthMod,
                   child: Text(
-                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                      '${_authMode == AuthMode.Login ? 'LOGIN' : 'SIGNUP'} INSTEAD'),
                   padding:
                       EdgeInsets.symmetric(horizontal: 30.0, vertical: 4.0),
                   textColor: Colors.red,

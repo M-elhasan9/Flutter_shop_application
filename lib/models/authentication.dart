@@ -42,12 +42,12 @@ class Authentication with ChangeNotifier {
           }));
       final responseData = json.decode(res.body);
       if (responseData['error'] != null) {
-        HttpException(responseData['error']['message']);
+        throw HttpException(responseData['error']['message']);
       }
       _token = responseData['idToken'];
       _userId = responseData['localId'];
       _expiryDate = DateTime.now()
-          .add(Duration(seconds: int.parse(responseData['expiresId'])));
+          .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       _autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();

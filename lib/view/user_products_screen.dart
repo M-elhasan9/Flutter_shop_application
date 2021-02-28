@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../controller/app_drawer.dart';
 
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products-screen';
@@ -12,6 +13,7 @@ class UserProductsScreen extends StatelessWidget {
       body: Center(
         child: Text('User product screen'),
       ),
+      drawer: AppDrawer(),
     );
   }
 }
