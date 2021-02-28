@@ -1,8 +1,9 @@
 import 'dart:math';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_shop_application/models/authentication.dart';
-import 'package:flutter_shop_application/view/edit_product_screen.dart';
+import '../models/authentication.dart';
+import '../models/http_exception.dart';
 
 class AuthenticationScreen extends StatelessWidget {
   static const routName = '/Authentication';
@@ -41,7 +42,7 @@ class AuthenticationScreen extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(vertical: 8, horizontal: 94.0),
 
-                        //Rotation****
+                    //Rotation****
                     transform: Matrix4.rotationZ(-8.0 * pi / 180.0)
                       ..translate(-10.0),
                     decoration: BoxDecoration(
@@ -137,10 +138,39 @@ class _AuthenticationCardState extends State<AuthenticationCard>
     if (!_formKey.currentState.validate()) {
       return;
     }
+    FocusScope.of(context).unfocus();
+    _formKey.currentState.save();
     setState(() {
       _isLoading = true;
     });
-    try {} catch (error) {}
+    try {
+      if (_authMode == AuthMode.Login) {
+        await Provider.of<Authentication>(context, listen: false)
+            .login(_authData['email'], _authData['password']);
+      } else {
+        await Provider.of<Authentication>(context, listen: false)
+            .signUp(_authData['email'], _authData['password']);
+      }
+    } on HttpException catch (error) {
+      var errorMessage = 'Authentication failed';
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'This eamil adress is already in use';
+      } else if (error.toString().contains('INVALID_EMAIL')) {
+        errorMessage = 'This is not a valid email adress';
+      } else if (error.toString().contains('WEAK_PASSWORD')) {
+        errorMessage = 'This password is to weak';
+      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Could not find a user with that email';
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = 'Invalid password.';
+      }
+
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      const errorMessage =
+          'Could not authenticate you. Please try again later.';
+      _showErrorDialog(errorMessage);
+    }
     setState(() {
       _isLoading = false;
     });
@@ -158,6 +188,20 @@ class _AuthenticationCardState extends State<AuthenticationCard>
       });
       _controller.reverse();
     }
+  }
+
+  void _showErrorDialog(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('An Error Occurred!'),
+              content: Text(errorMessage),
+              actions: [
+                FlatButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    child: Text('okey!'))
+              ],
+            ));
   }
 
   @override
@@ -192,7 +236,7 @@ class _AuthenticationCardState extends State<AuthenticationCard>
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: InputDecoration(labelText: 'password'),
                   obscureText: true,
                   controller: _passWordController,
                   validator: (val) {
@@ -251,11 +295,11 @@ class _AuthenticationCardState extends State<AuthenticationCard>
                 FlatButton(
                   onPressed: _switchAuthMod,
                   child: Text(
-                      '${_authMode == AuthMode.Login ? 'LOGIN' : 'SIGNUP'} INSTEAD'),
+                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
                   padding:
                       EdgeInsets.symmetric(horizontal: 30.0, vertical: 4.0),
-                  textColor: Theme.of(context).primaryTextTheme.headline6.color,
-                )
+                  textColor: Colors.red,
+                ),
               ],
             ),
           ),
