@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -46,7 +45,7 @@ class Products with ChangeNotifier {
   String userId;
 
   getData(String authToken, String uId, List<Product> products) {
-    authToken = authToken;
+    this.authToken = authToken;
     userId = uId;
     _items = products;
     notifyListeners();
