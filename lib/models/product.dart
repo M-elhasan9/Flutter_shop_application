@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -32,7 +31,7 @@ class Product with ChangeNotifier {
     notifyListeners();
 
     final url =
-        'https://shop-project-94eec-default-rtdb.firebaseio.com/products/$userId/$id.json?auth=$token';
+        'https://shop-project-94eec-default-rtdb.firebaseio.com/userFavorites/$userId/$id.json?auth=$token';
     try {
       final res = await http.put(
         url,
